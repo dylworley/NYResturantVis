@@ -6,11 +6,6 @@ df = pd.read_csv("NYResturantClean.csv")
 
 st.set_page_config(page_title="NYC Restaurant Dashboard", layout="wide")
 
-# --- Sidebar Filters ---
-st.sidebar.header("Filter the data")
-borough = st.sidebar.selectbox("Select Borough", sorted(df['BORO'].dropna().unique()))
-grade = st.sidebar.multiselect("Select Grade", df['GRADE'].dropna().unique(), default=df['GRADE'].dropna().unique())
-
 # Create a list of boroughs with "All" at the top
 boroughs = ['All'] + sorted(df['BORO'].dropna().unique().tolist())
 borough = st.sidebar.selectbox("Select Borough", boroughs)

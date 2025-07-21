@@ -6,26 +6,14 @@ df = pd.read_csv("NYResturantClean.csv")
 
 st.set_page_config(page_title="NYC Restaurant Dashboard", layout="wide")
 
-# Create a list of boroughs with "All" at the top
-boroughs = ['All'] + sorted(df['BORO'].dropna().unique().tolist())
-borough = st.sidebar.selectbox("Select Borough", boroughs)
+# --- Sidebar Filters ---
+st.sidebar.header("Filter the data")
+borough = st.sidebar.selectbox("Select Borough", sorted(df['BORO'].dropna().unique()))
+grade = st.sidebar.multiselect("Select Grade", df['GRADE'].dropna().unique(), default=df['GRADE'].dropna().unique())
 
-# Multiselect for grades
-grade = st.sidebar.multiselect(
-    "Select Grade", 
-    sorted(df['GRADE'].dropna().unique()), 
-    default=sorted(df['GRADE'].dropna().unique())
-)
+# Apply filters
+filtered_df = df[(df['BORO'] == borough) & (df['GRADE'].isin(grade))]
 
-# --- Apply Filters ---
-# Borough filter
-if borough == 'All':
-    filtered_df = df.copy()
-else:
-    filtered_df = df[df['BORO'] == borough]
-
-# Grade filter (applied after borough)
-filtered_df = filtered_df[filtered_df['GRADE'].isin(grade)]
 
 # --- Dashboard Header ---
 st.title("NYC Restaurant Inspection Dashboard")
